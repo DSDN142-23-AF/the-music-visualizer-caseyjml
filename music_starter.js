@@ -2,19 +2,20 @@
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
   
-  colorMode(HSB, 100);
+  colorMode(HSB, 50);
   background(255);
   rectMode(CENTER);
-  strokeWeight(9);
-  stroke(drum, 80, 80);
+  strokeWeight(10);
 
-  let drumMap = map(drum, 0, 100, 5, 70);
+
+  let drumMap = map(drum, 0, 100, 5, 30);
   let lineLength = 300;
   let lineStart = 100;
   let lineEnd = lineStart + lineLength;
 
-  for(let i = 10; i <= drumMap; i++){
-    let lineStep = i*15
+  stroke(drumMap, 80, 80);
+  for(let i = 1; i <= drumMap; i++){
+    let lineStep = i*20
     line(lineStart, lineStep, lineEnd, lineStep);
   }
    
