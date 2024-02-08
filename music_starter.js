@@ -1,5 +1,8 @@
 
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
+
+circleSize = 5
+
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
   
   colorMode(RGB, 60);
@@ -8,6 +11,15 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   strokeWeight(10);
   noFill();
 
+
+
+  if(counter > 15){
+    fill(0);
+    ellipse(width/2, height/2, circleSize)
+
+    circleSize = circleSize + 10
+  }
+  
   c1 = color(0); // black
   c2 = color(156, 25, 25); // red
   
@@ -33,11 +45,11 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
     //(lineStart, lineStep, lineEnd, lineStep);
   //}
 
-  
-  let bassMap = map(vocal, 0, 100, 10, 100);
-  stroke(bassMap, 80, 80);
+  let bassMap = map(vocal, 0, 100, 10, 130);
+  //stroke(bassMap, 80, 80);
+  stroke(0); // black
 
-  for (let ii = 1; ii <= 10; ii++){ // bass map circles y-coord
+  for (let ii = -1; ii <= 12; ii++){ // bass map circles y-coord
     let yStep = ii*50;
 
     for (let i = 1; i <= 18; i++){ // bass map circles x-coord
@@ -45,7 +57,9 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
     }
   }
 
-  noFill();
+
+  stroke(255); // white
+  noFill(); 
   strokeWeight(other/50); // stroke weight increases with # of circles
   let otherMap = map(other, 0, 100, 0, 50); // other map
 
