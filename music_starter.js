@@ -11,19 +11,64 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
 
 
 // OPENING SCENE
-if(counter < 10){
-let drumMap = map(drum, 0, 100, 5, 150);
+if(counter < 12){
+let vocalIntro = map(vocal, 0, 100, 5, 170);
 
-  stroke(drumMap, 80, 80);
+  stroke(vocalIntro, 80, 80);
   for(let l = 1; l <= 47; l++){
    let ellipseStep = 20*l // space between lines
-    ellipse(ellipseStep, height/2, 1, drumMap)
-  }
+    ellipse(ellipseStep, height/2, 1, vocalIntro)
+  }}
+
+
+// OPENING TEXT
+textSize(100); 
+textAlign(CENTER);
+strokeWeight(2);
+stroke(255);
+
+if(counter < 1 ){
+text('have', width/2, height/3); // "HAVE"
+}
+
+if(counter > 1 && counter < 2){
+text('you', width/2, height/3); // "YOU"
+}
+
+if(counter > 2 && counter < 3){
+text('got', width/2, height/3); // "GOT"
+}
+
+if(counter > 3 && counter < 5){
+text('your', width/2, height/3); // "YOUR"
+}
+
+if(counter > 10 && counter < 10.8){
+stroke(171, 3, 3); // red
+text('shinigami', width/2, height/3); // "SHINIGAMI"
+}
+
+if(counter > 10.8 && counter < 11.3){
+stroke(255); // white
+text('eyes', width/2, height/3); // "EYES"
+}
+
+if(counter > 11.3 && counter < 11.8){
+text('on?', width/2, height/3); // "ON?"
 }
   
 
+if(counter > 12){ // transition into eye
+ let vocalIntro = map(drum, 0, 100, 0, 50);
+ strokeWeight(10);
+ stroke(vocalIntro, 80, 80);
+  for(let l = 1; l <= 47; l++){
+   let ellipseStep = 20*l // space between lines
+    ellipse(ellipseStep, height/2, 1, vocalIntro) // shorter lines
+}}
+
 // SCENE 2
-  if(counter > 10){
+  if(counter > 30){
   
   c1 = color(0); // black
   c2 = color(156, 25, 25); // red
@@ -42,10 +87,10 @@ let drumMap = map(drum, 0, 100, 5, 150);
   //stroke(bassMap, 80, 80);
   stroke(0); // black
 
-  for (let ii = -1; ii <= 12; ii++){ // bass map circles y-coord
+  for (let ii = -1; ii <= 12; ii++){ // bass map geo pattern y-coord
     let yStep = ii*50;
 
-    for (let i = 1; i <= 18; i++){ // bass map circles x-coord
+    for (let i = 1; i <= 18; i++){ // bass map geo pattern x-coord
       ellipse(50*i, yStep, bassMap);
     }
   }
