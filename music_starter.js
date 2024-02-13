@@ -96,10 +96,14 @@ if(counter > 18 && counter < 80){
   
   // border
   let borderSize = 30
-  line(borderSize, borderSize, width-borderSize, borderSize);
-  line(borderSize, borderSize, borderSize, height-borderSize);
-  line(borderSize, height-borderSize, width-borderSize, height-borderSize);
-  line(width-borderSize, height-borderSize, width-borderSize, borderSize);
+  line(borderSize, borderSize, width-borderSize, borderSize); // top border
+  line(borderSize, borderSize, borderSize, height-borderSize); // left border
+  line(borderSize, height-borderSize, width-borderSize, height-borderSize); // bottom border
+  line(width-borderSize, height-borderSize, width-borderSize, borderSize); // right border
+
+  line(width/4*3, borderSize, width/4*3, height/2); 
+  
+
 
   // eye
 if (firstRun2){
@@ -134,7 +138,7 @@ strokeWeight(10);
 
 // Note: BELOW LINES OF CODE ARE FOR DETAILS ON THE RIGHT SIDE OF THE SCREEN! 
 
-strokeWeight(3); // for thinner details
+strokeWeight(other/50); // for thinner details
 
 let largeBarMap = map(bass, 0, 100, 10, 50); // bass map for longer bars
 let smallBarMap = map(bass, 0, 100, 5, 10); // bass map for circular thin bars
@@ -147,6 +151,7 @@ for(let o = 1; o <= smallBarMap; o++){
 
 push();
 stroke(0); // black (to create negative space (outline) around the larger bars)
+strokeWeight(4);
 fill(drumMap, 80, 80); // drumMap fill colour
 
 beginShape(); // bar at top of ellipse
@@ -177,6 +182,8 @@ quadraticVertex(ellipseX+bassMovement+100+largeBarMap, ellipseY, ellipseX+90+lar
 vertex(ellipseX+bassMovement, ellipseY+ellipseSpace);
 endShape(CLOSE);
 pop();
+
+strokeWeight(3);
 
 push();
 fill(0); // black
