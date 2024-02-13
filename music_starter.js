@@ -9,13 +9,17 @@ let Eye = [];
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
   
   let textHeight = height/11*6; // height of intro lyrics
+  let bassMovement = bass/5 // movement of objects with bass in scene 2 & 3
+
+  let ellipseX = 780 // X location of scene 3 details
+  let ellipseY = 150 // Y location of scene 3 details
+  let ellipseSpace = 15 // space (width) between bars around scene 3 ellipse
 
   colorMode(RGB, 60);
   background(0);
   rectMode(CENTER);
   strokeWeight(10);
   noFill();
-
 
 // OPENING SCENE
 if(counter < 12){
@@ -87,40 +91,96 @@ if(firstRun1){
 image(EyeLid, width/2, height/2);
 }
 
-// SCENE 2; EYE MOVING
+// SCENE 2; EYE MOVING -- BLUE
 if(counter > 18 && counter < 80){
 if (firstRun2){
   rectMode(CENTER);
   Eye.push(loadImage('Eye_0.png'));
   Eye.push(loadImage('Eye_1.png'));
-  Eye.push(loadImage('Eye_2.png'));
+  Eye.push(loadImage('Eye_2.png')); // Loads individual images for eye animation
 
   firstRun2 = false
 }
 
-let EyeVocalMap = int(map(vocal, 0, 100, 0, 3)); // int vocal map for eye
-console.log(EyeVocalMap);
+let EyeVocalMap = int(map(vocal, 0, 100, 0, 3)); // int vocal map for eye animation
 
 push();
-scale(0.5);
+scale(0.5); // Size of eye 
 image(Eye[EyeVocalMap], width/2 + bass/5, height/2); // Eye animated with vocal map
 pop();
 
 strokeWeight(10);
   let drumMap = map(drum, 0, 100, 5, 30); // drum map 
-  let lineLength = 200 + bass/5;
-  let lineStart = 15 + bass/5;
+  let lineLength = 200 + bassMovement; // line moves along x with bass
+  let lineStart = 15 + bassMovement;
   let lineEnd = lineStart + lineLength;
 
-  stroke(drumMap, 80, 80);
+  stroke(drumMap, 80, 80); // stroke colour (based on drum map)
 
-  for(let l = 1; l <= drumMap; l++){
+  for(let l = 1; l <= drumMap; l++){ // LINES MOVING ON LEFT WITH DRUM MAP
     let lineStep = l*20
     line(lineStart, lineStep, lineEnd, lineStep);
   }
+
+
+// Note: BELOW LINES OF CODE ARE FOR DETAILS ON THE RIGHT SIDE OF THE SCREEN! 
+
+strokeWeight(3); // for thinner details
+
+let largeBarMap = map(bass, 0, 100, 10, 50); // bass map for longer bars
+let smallBarMap = map(bass, 0, 100, 5, 10); // bass map for circular thin bars
+
+for(let o = 1; o <= smallBarMap; o++){
+  let oGap = o*20; // gap size between circular bars
+  noFill();
+  ellipse(ellipseX+bassMovement, ellipseY, oGap);
 }
 
-// SCENE 3
+push();
+stroke(0); // black (to create negative space (outline) around the larger bars)
+fill(drumMap, 80, 80); // drumMap fill colour
+
+beginShape(); // bar at top of ellipse
+vertex(ellipseX-ellipseSpace+bassMovement, ellipseY);
+vertex(ellipseX-ellipseSpace+bassMovement, ellipseY-65-largeBarMap);
+quadraticVertex(ellipseX+bassMovement, ellipseY-75-largeBarMap, ellipseX+ellipseSpace+bassMovement, ellipseY-65-largeBarMap);
+vertex(ellipseX+ellipseSpace+bassMovement, ellipseY);
+endShape(CLOSE);
+
+beginShape(); // bar at bottom of ellipse
+vertex(ellipseX-ellipseSpace+bassMovement, ellipseY);
+vertex(ellipseX-ellipseSpace+bassMovement, ellipseY+100+largeBarMap);
+quadraticVertex(ellipseX+bassMovement, ellipseY+110+largeBarMap, ellipseX+ellipseSpace+bassMovement, ellipseY+100+largeBarMap);
+vertex(ellipseX+ellipseSpace+bassMovement, ellipseY);
+endShape(CLOSE);
+
+beginShape(); // bar at left of ellipse
+vertex(ellipseX+bassMovement, ellipseY-ellipseSpace);
+vertex(ellipseX+bassMovement-50-largeBarMap, ellipseY-ellipseSpace);
+quadraticVertex(ellipseX+bassMovement-60-largeBarMap, ellipseY, ellipseX-50-largeBarMap+bassMovement, ellipseY+ellipseSpace);
+vertex(ellipseX+bassMovement, ellipseY+ellipseSpace);
+endShape(CLOSE);
+
+beginShape(); // bar at right of ellipse
+vertex(ellipseX+bassMovement, ellipseY-ellipseSpace);
+vertex(ellipseX+bassMovement+90+largeBarMap, ellipseY-ellipseSpace);
+quadraticVertex(ellipseX+bassMovement+100+largeBarMap, ellipseY, ellipseX+90+largeBarMap+bassMovement, ellipseY+ellipseSpace);
+vertex(ellipseX+bassMovement, ellipseY+ellipseSpace);
+endShape(CLOSE);
+pop();
+
+push();
+fill(0); // black
+ellipse(ellipseX+bassMovement, ellipseY, 130, 130); // black circle
+pop(); // pops back to colour based on drumMap + no fill :)
+
+ellipse(ellipseX+bassMovement, ellipseY, 120, 120); // blue circle
+
+}
+
+// SCENE 3; EYE MOVING -- RED
+
+// SCENE 4
   if(counter > 80){
   
   c1 = color(0); // black
