@@ -3,11 +3,13 @@
 let firstRun1 = true;
 let firstRun2 = true;
 
-let EyeLid;
+let EyeLid; 
 let Eye = [];
 
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
   
+  let textHeight = height/11*6; // height of intro lyrics
+
   colorMode(RGB, 60);
   background(0);
   rectMode(CENTER);
@@ -22,7 +24,7 @@ let vocalIntro = map(vocal, 0, 100, 5, 170);
   stroke(vocalIntro, 80, 80);
   for(let l = 1; l <= 47; l++){
    let ellipseStep = 20*l // space between lines
-    ellipse(ellipseStep, height/2, 1, vocalIntro)
+    ellipse(ellipseStep, height/2, .2, vocalIntro);
   }}
 
 
@@ -34,33 +36,33 @@ stroke(255); // white
 fill(0); // black
 
 if(counter < 1 ){
-text('have', width/5, height/11*6); // "HAVE"
+text('have', width/5, textHeight); // "HAVE"
 }
 
 if(counter > 1 && counter < 2){
-text('you', width/5*2, height/11*6); // "YOU"
+text('you', width/5*2, textHeight); // "YOU"
 }
 
 if(counter > 2 && counter < 3){
-text('got', width/5*3, height/11*6); // "GOT"
+text('got', width/5*3, textHeight); // "GOT"
 }
 
 if(counter > 3 && counter < 5){
-text('your', width/5*4, height/11*6); // "YOUR"
+text('your', width/5*4, textHeight); // "YOUR"
 }
 
 if(counter > 10 && counter < 10.8){
 fill(171, 3, 3); // red
-text('shinigami', width/2, height/11*6); // "SHINIGAMI"
+text('shinigami', width/2, textHeight); // "SHINIGAMI"
 }
 
 if(counter > 10.8 && counter < 11.3){
 stroke(255); // white
-text('eyes', width/2, height/11*6); // "EYES"
+text('eyes', width/2, textHeight); // "EYES"
 }
 
 if(counter > 11.3 && counter < 11.8){
-text('on?', width/2, height/11*6); // "ON?"
+text('on?', width/2, textHeight); // "ON?"
 }
   
 
@@ -96,13 +98,26 @@ if (firstRun2){
   firstRun2 = false
 }
 
-let EyeVocalMap = int(map(vocal, 0, 100, 0, 3));
+let EyeVocalMap = int(map(vocal, 0, 100, 0, 3)); // int vocal map for eye
 console.log(EyeVocalMap);
 
 push();
 scale(0.5);
-image(Eye[EyeVocalMap], width/2, height/2);
+image(Eye[EyeVocalMap], width/2 + bass/5, height/2); // Eye animated with vocal map
 pop();
+
+strokeWeight(10);
+  let drumMap = map(drum, 0, 100, 5, 30); // drum map 
+  let lineLength = 200 + bass/5;
+  let lineStart = 15 + bass/5;
+  let lineEnd = lineStart + lineLength;
+
+  stroke(drumMap, 80, 80);
+
+  for(let l = 1; l <= drumMap; l++){
+    let lineStep = l*20
+    line(lineStart, lineStep, lineEnd, lineStep);
+  }
 }
 
 // SCENE 3
