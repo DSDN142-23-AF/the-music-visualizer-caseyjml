@@ -93,6 +93,15 @@ image(EyeLid, width/2, height/2);
 
 // SCENE 2; EYE MOVING -- BLUE
 if(counter > 18 && counter < 80){
+  
+  // border
+  let borderSize = 30
+  line(borderSize, borderSize, width-borderSize, borderSize);
+  line(borderSize, borderSize, borderSize, height-borderSize);
+  line(borderSize, height-borderSize, width-borderSize, height-borderSize);
+  line(width-borderSize, height-borderSize, width-borderSize, borderSize);
+
+  // eye
 if (firstRun2){
   rectMode(CENTER);
   Eye.push(loadImage('Eye_0.png'));
