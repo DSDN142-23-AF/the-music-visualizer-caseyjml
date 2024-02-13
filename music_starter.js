@@ -101,8 +101,9 @@ if(counter > 18 && counter < 80){
   line(borderSize, height-borderSize, width-borderSize, height-borderSize); // bottom border
   line(width-borderSize, height-borderSize, width-borderSize, borderSize); // right border
 
-  line(width/4*3, borderSize, width/4*3, height/2); 
-  
+  line(width/3*2, borderSize, width/3*2, height/2); 
+  line(width/3*2, height/2, width/7*5, height/2+30); // diagonal border
+
 
 
   // eye
