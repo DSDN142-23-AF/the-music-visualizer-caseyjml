@@ -15,6 +15,7 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   
   let textHeight = height/11*6; // height of intro lyrics
   let bassMovement = bass/5 // movement of objects with bass in scene 2 & 3
+  let drumBarsMap = map(drum, 0, 100, 2, 25); // for bars on left side in eye scene
   let drumMap = map(drum, 0, 100, 5, 30); // drum map 
   let EyeVocalMap = int(map(vocal, 0, 100, 0, 3)); // int vocal map for eye animation
 
@@ -63,10 +64,10 @@ text('your', width/5*4, textHeight); // "YOUR"
 }
 
 if(counter > 10 && counter < 10.8){
-pop();
+push();
 fill(201, 0, 7); // red
 text('shinigami', width/2, textHeight); // "SHINIGAMI"
-push();
+pop();
 }
 
 if(counter > 10.8 && counter < 11.3){
@@ -100,8 +101,7 @@ if(counter > 13){
   line(width/3*2+10, borderSize, width/3*2+10, height/2); 
   line(width/3*2+10, height/2, width/7*5+10, height/2+30); // diagonal border
   line(width/7*5+10, height/2+30, width/7*5+10, height-borderSize);
-
-
+  line(width/7*2, borderSize, width/7*2, height-borderSize); // left dividing line
 
   // eye
 if (firstRun2){
@@ -124,7 +124,7 @@ pop();
 strokeWeight(10);
  
   let lineLength = width/5 + bassMovement; // line moves along x with bass
-  let lineStart = borderSize + bassMovement;
+  let lineStart = borderSize + 4 + bassMovement;
   let lineEnd = lineStart + lineLength;
 
   if(counter > turnRed){ // turns red instead of blue later in song
@@ -135,9 +135,9 @@ strokeWeight(10);
   stroke(drumMap, 80, 80); // stroke colour (based on drum map)
   }
 
-  for(let l = 1; l <= drumMap; l++){ 
+  for(let l = 1; l <= drumBarsMap; l++){ 
     let lineStep = l*20 // space between lines
-    line(lineStart, lineStep, lineEnd, lineStep);
+    line(lineStart, borderSize + lineStep, lineEnd, borderSize + lineStep);
   }
 
 
@@ -216,6 +216,15 @@ line(739, 360 + 30*2, 735+drum, 360 + 30*2); // drum line
 line(739, 360 + 30*3, 735+bass, 360 + 30*3); // bass line
 line(739, 360 + 30*4, 735+other, 360 + 30*4); // other line
 pop();
+
+// counter
+  push();
+  stroke(255); // white
+  textSize(30);
+  strokeWeight(1);
+  text(counter, width/2, height-borderSize-15);
+  pop();
+
 }
 
 // SCENE 2.5; warning flickers
@@ -348,11 +357,4 @@ scale(0.5); // Size of eye
 image(EyeRed[EyeVocalMap], width/2 + bass/5, height/2); // RED Eye animated with vocal map
 pop();
 }
-
-push();
-stroke(255);
-textSize(30);
-strokeWeight(1);
-text(counter, 150, height-50);
-pop();
 }
