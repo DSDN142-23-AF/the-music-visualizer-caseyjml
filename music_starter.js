@@ -2,18 +2,21 @@
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
 let firstRun = true;
 let firstRun2 = true;
+let firstRun3 = true;
 
 let EyeBlue = [];
+let EyeRed = [];
 let Symbol;
 
 let sceneSwitch = 116;
-let turnRed = 134;
+let turnRed = 132.5;
 
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
   
   let textHeight = height/11*6; // height of intro lyrics
   let bassMovement = bass/5 // movement of objects with bass in scene 2 & 3
   let drumMap = map(drum, 0, 100, 5, 30); // drum map 
+  let EyeVocalMap = int(map(vocal, 0, 100, 0, 3)); // int vocal map for eye animation
 
   let ellipseX = 780 // X location of scene 3 details
   let ellipseY = 150 // Y location of scene 3 details
@@ -109,8 +112,6 @@ if (firstRun2){
 
   firstRun2 = false
 }
-
-let EyeVocalMap = int(map(vocal, 0, 100, 0, 3)); // int vocal map for eye animation
 
 if(counter < turnRed){
 push();
@@ -329,6 +330,23 @@ if(counter > 99 && counter < sceneSwitch){
   let counterMap = map(counter, 99, sceneSwitch, 205, width-400);
   rect(205, height/2-17, counterMap, 13); // loading bar filler
   pop();
+}
+
+// RED eye animation!! <3
+if (firstRun3){
+  rectMode(CENTER);
+  EyeRed.push(loadImage('Eye_0.png'));
+  EyeRed.push(loadImage('Eye_1.png'));
+  EyeRed.push(loadImage('Eye_2.png')); // Loads individual images for BLUE eye animation
+
+  firstRun3 = false
+}
+
+if(counter > turnRed){
+push();
+scale(0.5); // Size of eye 
+image(EyeRed[EyeVocalMap], width/2 + bass/5, height/2); // RED Eye animated with vocal map
+pop();
 }
 
 push();
