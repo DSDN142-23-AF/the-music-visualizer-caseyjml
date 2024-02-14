@@ -1,10 +1,10 @@
 
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
-let firstRun1 = true;
+let firstRun = true;
 let firstRun2 = true;
 
-let EyeLid; 
-let Eye = [];
+let EyeBlue = [];
+let Symbol;
 
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
   
@@ -22,6 +22,12 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   noFill();
 
 // OPENING SCENE
+push();
+stroke(255);
+textSize(30);
+strokeWeight(1);
+text(counter, 150, height-50);
+pop();
 if(counter < 12){
 let vocalIntro = map(vocal, 0, 100, 5, 170);
 
@@ -51,17 +57,18 @@ if(counter > 2 && counter < 3){
 text('got', width/5*3, textHeight); // "GOT"
 }
 
-if(counter > 3 && counter < 5){
+if(counter > 3 && counter < 4){
 text('your', width/5*4, textHeight); // "YOUR"
 }
 
 if(counter > 10 && counter < 10.8){
+pop();
 fill(171, 3, 3); // red
 text('shinigami', width/2, textHeight); // "SHINIGAMI"
+push();
 }
 
 if(counter > 10.8 && counter < 11.3){
-stroke(255); // white
 text('eyes', width/2, textHeight); // "EYES"
 }
 
@@ -70,7 +77,7 @@ text('on?', width/2, textHeight); // "ON?"
 }
   
 
-if(counter > 12 && counter < 14){ // transition into eye
+if(counter > 12 && counter < 13){ // transition into eye
  let vocalIntro = map(bass, 0, 100, 0, 50);
  strokeWeight(10);
  stroke(vocalIntro, 80, 80);
@@ -79,20 +86,8 @@ if(counter > 12 && counter < 14){ // transition into eye
     ellipse(ellipseStep, height/2, 1, vocalIntro) // shorter lines
 }}
 
-// SCENE 1.5; EYELID STILL
-if(counter > 14 && counter < 18){
-if(firstRun1){
-  rectMode(CENTER);
-  EyeLid = loadImage('Eye_0.png');
-
- firstRun1 = false
-}
-
-image(EyeLid, width/2, height/2);
-}
-
 // SCENE 2; EYE MOVING -- BLUE
-if(counter > 18 && counter < 80){
+if(counter > 13 && counter < 30){
   
   // border
   let borderSize = 30
@@ -103,15 +98,16 @@ if(counter > 18 && counter < 80){
 
   line(width/3*2+10, borderSize, width/3*2+10, height/2); 
   line(width/3*2+10, height/2, width/7*5+10, height/2+30); // diagonal border
+  line(width/7*5+10, height/2+30, width/7*5+10, height-borderSize);
 
 
 
   // eye
 if (firstRun2){
   rectMode(CENTER);
-  Eye.push(loadImage('Eye_0.png'));
-  Eye.push(loadImage('Eye_1.png'));
-  Eye.push(loadImage('Eye_2.png')); // Loads individual images for eye animation
+  EyeBlue.push(loadImage('eyeblue_0.png'));
+  EyeBlue.push(loadImage('eyeblue_1.png'));
+  EyeBlue.push(loadImage('eyeblue_2.png')); // Loads individual images for BLUE eye animation
 
   firstRun2 = false
 }
@@ -120,19 +116,20 @@ let EyeVocalMap = int(map(vocal, 0, 100, 0, 3)); // int vocal map for eye animat
 
 push();
 scale(0.5); // Size of eye 
-image(Eye[EyeVocalMap], width/2 + bass/5, height/2); // Eye animated with vocal map
+image(EyeBlue[EyeVocalMap], width/2 + bass/5, height/2); // Eye animated with vocal map
 pop();
 
+// Lines moving on left with drum map
 strokeWeight(10);
   let drumMap = map(drum, 0, 100, 5, 30); // drum map 
-  let lineLength = 200 + bassMovement; // line moves along x with bass
-  let lineStart = 15 + bassMovement;
+  let lineLength = width/5 + bassMovement; // line moves along x with bass
+  let lineStart = borderSize + bassMovement;
   let lineEnd = lineStart + lineLength;
 
   stroke(drumMap, 80, 80); // stroke colour (based on drum map)
 
-  for(let l = 1; l <= drumMap; l++){ // LINES MOVING ON LEFT WITH DRUM MAP
-    let lineStep = l*20
+  for(let l = 1; l <= drumMap; l++){ 
+    let lineStep = l*20 // space between lines
     line(lineStart, lineStep, lineEnd, lineStep);
   }
 
@@ -193,12 +190,40 @@ pop(); // pops back to colour based on drumMap + no fill :)
 
 ellipse(ellipseX+bassMovement, ellipseY, 120, 120); // blue circle
 
+// Music bars on bottom right of screen
+for(let b = 1; b <= 4; b++){ 
+  let barSpace = b*30 // space between lines
+  rect(810, 360+barSpace, 150, 10);
 }
 
-// SCENE 3; EYE MOVING -- RED
+push();
+strokeWeight(1);
+line(739, 360 + 30*1, 735+vocal, 360 + 30*1); // vocal line
+line(739, 360 + 30*2, 735+drum, 360 + 30*2); // drum line
+line(739, 360 + 30*3, 735+bass, 360 + 30*3); // bass line
+line(739, 360 + 30*4, 735+other, 360 + 30*4); // other line
+pop();
+}
+
+// SCENE 2.5; warning flickers
+if(counter > 30 && counter < 32){
+
+if(firstRun){
+rectMode(CENTER);
+WSymbol = loadImage('symbol.png'); // load in warning symbol
+
+firstRun = false;
+}
+
+for(let ws = 1; ws <= 10; ws++){
+  let wsGap = ws*60; // space between symbols
+  image(WSymbol, 100 + wsGap, 100 + wsGap); // position warning symbol
+}
+}
+
 
 // SCENE 4
-  if(counter > 80){
+  if(counter > 45){
   
   c1 = color(0); // black
   c2 = color(156, 25, 25); // red
