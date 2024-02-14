@@ -6,10 +6,14 @@ let firstRun2 = true;
 let EyeBlue = [];
 let Symbol;
 
+let sceneSwitch = 116;
+let turnRed = 134;
+
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
   
   let textHeight = height/11*6; // height of intro lyrics
   let bassMovement = bass/5 // movement of objects with bass in scene 2 & 3
+  let drumMap = map(drum, 0, 100, 5, 30); // drum map 
 
   let ellipseX = 780 // X location of scene 3 details
   let ellipseY = 150 // Y location of scene 3 details
@@ -22,12 +26,6 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   noFill();
 
 // OPENING SCENE
-push();
-stroke(255);
-textSize(30);
-strokeWeight(1);
-text(counter, 150, height-50);
-pop();
 if(counter < 12){
 let vocalIntro = map(vocal, 0, 100, 5, 170);
 
@@ -63,7 +61,7 @@ text('your', width/5*4, textHeight); // "YOUR"
 
 if(counter > 10 && counter < 10.8){
 pop();
-fill(171, 3, 3); // red
+fill(201, 0, 7); // red
 text('shinigami', width/2, textHeight); // "SHINIGAMI"
 push();
 }
@@ -87,7 +85,7 @@ if(counter > 12 && counter < 13){ // transition into eye
 }}
 
 // SCENE 2; EYE MOVING -- BLUE
-if(counter > 13 && counter < 30){
+if(counter > 13){
   
   // border
   let borderSize = 30
@@ -114,19 +112,27 @@ if (firstRun2){
 
 let EyeVocalMap = int(map(vocal, 0, 100, 0, 3)); // int vocal map for eye animation
 
+if(counter < turnRed){
 push();
 scale(0.5); // Size of eye 
 image(EyeBlue[EyeVocalMap], width/2 + bass/5, height/2); // Eye animated with vocal map
 pop();
+}
 
 // Lines moving on left with drum map
 strokeWeight(10);
-  let drumMap = map(drum, 0, 100, 5, 30); // drum map 
+ 
   let lineLength = width/5 + bassMovement; // line moves along x with bass
   let lineStart = borderSize + bassMovement;
   let lineEnd = lineStart + lineLength;
 
+  if(counter > turnRed){ // turns red instead of blue later in song
+    stroke(201, 0, 7);
+  }
+
+  else{
   stroke(drumMap, 80, 80); // stroke colour (based on drum map)
+  }
 
   for(let l = 1; l <= drumMap; l++){ 
     let lineStep = l*20 // space between lines
@@ -150,7 +156,13 @@ for(let o = 1; o <= smallBarMap; o++){
 push();
 stroke(0); // black (to create negative space (outline) around the larger bars)
 strokeWeight(4);
+
+if(counter > turnRed){ // turns red instead of blue later in song
+  fill(201, 0, 7);
+}
+else{
 fill(drumMap, 80, 80); // drumMap fill colour
+}
 
 beginShape(); // bar at top of ellipse
 vertex(ellipseX-ellipseSpace+bassMovement, ellipseY);
@@ -208,6 +220,12 @@ pop();
 // SCENE 2.5; warning flickers
 if(counter > 30 && counter < 32){
 
+push();
+stroke(0); // black
+fill(0); // black
+rect(0, 0, width*2, height*2); // sets background for new scene
+pop();
+
 if(firstRun){
 rectMode(CENTER);
 WSymbol = loadImage('symbol.png'); // load in warning symbol
@@ -215,18 +233,19 @@ WSymbol = loadImage('symbol.png'); // load in warning symbol
 firstRun = false;
 }
 
-for(let ws = 1; ws <= 10; ws++){
-  let wsGap = ws*60; // space between symbols
-  image(WSymbol, 100 + wsGap, 100 + wsGap); // position warning symbol
+for(let ws = 1; ws <= 6; ws++){
+  let wsGap = ws*20; // space between symbols
+  image(WSymbol, (wsGap*other/10)-220, wsGap*2-70); // position warning symbol
 }
 }
 
 
-// SCENE 4
-  if(counter > 45){
-  
+// SCENE 3; spiral and gradient 
+  if(counter > 42 && counter < 62.5 || counter > 80 && counter < sceneSwitch){
+
+
   c1 = color(0); // black
-  c2 = color(156, 25, 25); // red
+  c2 = color(87, 208, 235); // blue :)
   
   let gradientMap = map(bass, 0, 100, 0, 2); 
 
@@ -237,10 +256,11 @@ for(let ws = 1; ws <= 10; ws++){
     line(0,y,width, y); // drawing the gradient (line the width of the screen)
   }
 
-
+// GEOMETRIC BACKGROUND
   let bassMap = map(vocal, 0, 100, 10, 130);
   //stroke(bassMap, 80, 80);
   stroke(0, 0, 0, 100); // black
+  fill(0);
 
   for (let ii = -1; ii <= 12; ii++){ // bass map geo pattern y-coord
     let yStep = ii*50;
@@ -250,8 +270,8 @@ for(let ws = 1; ws <= 10; ws++){
     }
   }
 
-
-  stroke(255); // white
+// SPIRAL PATTERN
+  stroke(255); // white 
   noFill(); 
   strokeWeight(other/50); // stroke weight increases with # of circles
   let otherMap = map(other, 0, 100, 0, 50); // other map
@@ -261,4 +281,60 @@ for(let ws = 1; ws <= 10; ws++){
     ellipse(width/2, height/2, oGap);
   }
   }
+
+// MOVING BLACK CIRCLES
+if(counter > 46.5 && counter < 62.5){
+  for(let oo = 1; oo <= other/10; oo++){
+    let ooGap = oo*20; // gap size between circles
+    stroke(drumMap, 80, 80);
+    strokeWeight(5);
+    fill(0); // black
+    ellipse(width/5, 50+drum, ooGap);
+    ellipse(width/5*4, 50+drum, ooGap);
+    ellipse(width/5, 50+height/4*2+drum, ooGap);
+    ellipse(width/5*4, 50+height/4*2+drum, ooGap);
+}
+}
+
+// SCENE 4; random equaliser effect
+if(counter > 99 && counter < sceneSwitch){
+  push();
+  stroke(0); // black
+  fill(0); // black
+  rect(0, 0, width*2, height*2); // sets background for new scene
+  pop();
+
+  // random equaliser lines:
+  stroke(drumMap, 80, 80);
+  strokeWeight(2);
+  for(let e = 1; e <= 30; e++){ 
+    let lineSpace = e*10 // space between lines
+    let rLine1 = random(height/5, height/5*2);
+    let rLine2 = random(height/5*3, height/5*4);
+    line(width/3+lineSpace, rLine1-drum*2, width/3+lineSpace, rLine2+drum*2);
+  }
+
+  // loading bar:
+  push();
+  rectMode(CORNER);
+  scale(1);
+  stroke(255); // white
+  strokeWeight(2);
+  fill(0); // black
+  rect(200, height/2-20, width-400, 20); // loading bar outline
+
+  stroke(drumMap, 80, 80);
+  fill(drumMap, 80, 80);
+
+  let counterMap = map(counter, 99, sceneSwitch, 205, width-400);
+  rect(205, height/2-17, counterMap, 13); // loading bar filler
+  pop();
+}
+
+push();
+stroke(255);
+textSize(30);
+strokeWeight(1);
+text(counter, 150, height-50);
+pop();
 }
