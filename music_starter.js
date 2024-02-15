@@ -227,35 +227,21 @@ pop();
 
 }
 
-// SCENE 2.5; warning flickers
-if(counter > 30 && counter < 32){
 
-push();
-stroke(0); // black
-fill(0); // black
-rect(0, 0, width*2, height*2); // sets background for new scene
-pop();
-
-if(firstRun){
-rectMode(CENTER);
-WSymbol = loadImage('symbol.png'); // load in warning symbol
-
-firstRun = false;
-}
-
-for(let ws = 1; ws <= 6; ws++){
-  let wsGap = ws*20; // space between symbols
-  image(WSymbol, (wsGap*other/10)-220, wsGap*2-70); // position warning symbol
-}
-}
 
 
 // SCENE 3; spiral and gradient 
-  if(counter > 42 && counter < 62.5 || counter > 80 && counter < sceneSwitch){
+  if(counter > 42 && counter < 62.5 || counter > 80 && counter < sceneSwitch || counter > 149){
 
 
   c1 = color(0); // black
+  
+  if(counter > 149){
+  c2 = color(201, 0, 7); // red  
+  }
+  else{
   c2 = color(87, 208, 235); // blue :)
+  }
   
   let gradientMap = map(bass, 0, 100, 0, 2); 
 
@@ -307,7 +293,7 @@ if(counter > 46.5 && counter < 62.5){
 }
 
 // SCENE 4; random equaliser effect
-if(counter > 99 && counter < sceneSwitch){
+if(counter > 99 && counter < sceneSwitch || counter > 30 && counter < 32){
   push();
   stroke(0); // black
   fill(0); // black
@@ -322,9 +308,10 @@ if(counter > 99 && counter < sceneSwitch){
     let rLine1 = random(height/5, height/5*2);
     let rLine2 = random(height/5*3, height/5*4);
     line(width/3+lineSpace, rLine1-drum*2, width/3+lineSpace, rLine2+drum*2);
-  }
+  }}
 
   // loading bar:
+  if(counter > 99 && counter < sceneSwitch){
   push();
   rectMode(CORNER);
   scale(1);
@@ -357,4 +344,22 @@ scale(0.5); // Size of eye
 image(EyeRed[EyeVocalMap], width/2 + bass/5, height/2); // RED Eye animated with vocal map
 pop();
 }
+
+// SCENE 2.5; warning flickers
+if(counter > 30 && counter < 32){
+
+  
+  if(firstRun){
+  rectMode(CENTER);
+  WSymbol = loadImage('symbol.png'); // load in warning symbol
+  
+  firstRun = false;
+  }
+  
+  let WSMap = map(other, 0, 100, 0, 15);
+  for(let ws = 1; ws <= WSMap; ws++){
+    let wsGap = ws*20; // space between symbols
+    image(WSymbol, wsGap*3, wsGap*2-WSMap*5); // position warning symbol
+  }
+  }
 }
