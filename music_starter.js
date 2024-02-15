@@ -17,7 +17,7 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   let bassMovement = bass/5 // movement of objects with bass in scene 2 & 3
   let drumBarsMap = map(drum, 0, 100, 2, 25); // for bars on left side in eye scene
   let drumMap = map(drum, 0, 100, 5, 30); // drum map 
-  let EyeVocalMap = int(map(vocal, 0, 100, 0, 3)); // int vocal map for eye animation
+  let EyeVocalMap = int(map(vocal, 0, 100, 0, 4)); // int vocal map for eye animation
 
   let ellipseX = 780 // X location of scene 3 details
   let ellipseY = 150 // Y location of scene 3 details
@@ -106,9 +106,10 @@ if(counter > 13){
   // eye
 if (firstRun2){
   rectMode(CENTER);
-  EyeBlue.push(loadImage('eyeblue_0.png'));
-  EyeBlue.push(loadImage('eyeblue_1.png'));
-  EyeBlue.push(loadImage('eyeblue_2.png')); // Loads individual images for BLUE eye animation
+  EyeBlue.push(loadImage('eyeblue_0.png')); // same as eyeblue_1
+  EyeBlue.push(loadImage('eyeblue_1.png')); // same as eyeblue_0
+  EyeBlue.push(loadImage('eyeblue_2.png'));
+  EyeBlue.push(loadImage('eyeblue_3.png')); // Loads individual images for BLUE eye animation
 
   firstRun2 = false
 }
@@ -333,7 +334,8 @@ if (firstRun3){
   rectMode(CENTER);
   EyeRed.push(loadImage('Eye_0.png'));
   EyeRed.push(loadImage('Eye_1.png'));
-  EyeRed.push(loadImage('Eye_2.png')); // Loads individual images for BLUE eye animation
+  EyeRed.push(loadImage('Eye_2.png')); 
+  EyeRed.push(loadImage('Eye_3.png')); // Loads individual images for RED eye animation
 
   firstRun3 = false
 }
